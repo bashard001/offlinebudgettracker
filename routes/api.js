@@ -23,5 +23,13 @@ router.get("/api/transaction", (req, res) => {
       res.status(404).json(err);
     });
 });
+router.post("/api/transaction/remove", ({body}, res) =>{
+  console.log(body)
+  Transaction.deleteOne({ name: `${body.name}` }, function (err, results, fields) {
+    if(err) res.sendStatus(404);
+    console.log(results, fields);
+    res.sendStatus(200);
+  });
+})
 
 module.exports = router;

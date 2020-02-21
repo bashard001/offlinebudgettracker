@@ -37,6 +37,7 @@ async function handleFormSubmit(event) {
         addTransaction(ibody) 
         total.innerHTML = totalAmount
         clearinput()
+        init()
     
    
   }
@@ -48,7 +49,7 @@ async function handleFormSubmit(event) {
     })
     const json = await res.json()
             console.log(json)
-        return tbody.innerHTML = json.map(getTransactions).join("\n")
+    tbody.innerHTML = json.map(getTransactions).join("\n")
         
   }
   init()
@@ -63,7 +64,26 @@ async function handleFormSubmit(event) {
 
 
 
+subFunds.addEventListener("click", async ()=> {
+  try {
+  let ibody = {}
 
+  ibody.name = tName.value.trim();
+  ibody.value = Number(tAmount.value.trim());
+
+  total.innerHTML -= ibody.value;
+  var res = await fetch("/api/transaction/remove", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(ibody)
+  })
+  
+ init()
+}
+catch(err){
+  console.log(err);
+}
+})
 
 addFunds.addEventListener("click", handleFormSubmit)
 
